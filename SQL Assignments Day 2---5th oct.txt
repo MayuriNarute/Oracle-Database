@@ -1,0 +1,114 @@
+				**SQL Assignment - Day 2**
+
+Name : Mayuri Narute.
+====================================================================			
+1)
+	 select * from books where author_name='Loni' and cost<600;
+
+====================================================================
+2)
+	select * from issue where return_date is null;
+
+====================================================================
+3)
+	update issue set return_date=30-Dec-06 where lib_issue_id in(7001 , 7002 ,7003 ,7004);
+
+====================================================================
+4)
+	select * from issue where(return_date)-(issue_date)>30;
+
+====================================================================
+5)
+	 select * from books where cost between 500 and 750;
+
+==========================================================================================
+6)
+	select * from books where category='science' or category='Database'or category='Fiction'or category='System';
+
+===========================================================================================
+7)
+	select  member_name,penalty_amount from member  order by penalty_amount desc ;
+
+====================================================================
+8)
+	select book_name,category,cost from books order by category ,cost desc;
+
+====================================================================
+9)
+	select * from books where book_name like '%SQL%';
+
+===========================================================================================
+10)
+	select * from member where (member_name like 'r%' or member_name like 'G%' )and member_name like'%i%' ;
+
+============================================================================================
+11)
+	select initcap(book_name),upper(author_name),cost from books order by cost desc; 
+
+=======================================================================
+12)
+	select to_char(issue_date,'day-mon-dd-yy') ,to_char(return_date,'day-mon-dd-yy')  from issue;
+
+========================================================================
+13)
+	not solve.....
+
+=============================================================================
+14)
+	select * from member where acc_open_date between '1-jan-2006' and '31-dec-2006';
+
+=============================================================================
+15)
+	select lib_issue_id,issue_date,return_date from issue where total_days=(return_date)-(issue_date);
+
+=============================================================================
+16)
+	 select member_name,acc_open_date from member order by acc_open_date;
+
+====================================================================
+17)
+	select count(*) book_name from books;
+
+====================================================================
+18)
+	select count(*) penalty_amount from member;
+
+====================================================================
+19)
+	 select count(*) member_name from member;
+
+====================================================================
+20)
+	
+	select count(*) book_no  from books;
+
+====================================================================
+21)
+	select count(*),avg(fees_paid)  fees_paid from member;
+
+====================================================================
+22)
+	select round(months_between(return_date,issue_date))from issue;
+
+====================================================================
+23)
+	select length (member_name) from member;
+
+====================================================================
+24)
+	select substr(membership_type,1,5)from member;
+
+====================================================================
+25)
+	select last_day(issue_date)from issue;
+
+====================================================================
+			==---THE END---==
+
+
+
+
+
+
+
+	

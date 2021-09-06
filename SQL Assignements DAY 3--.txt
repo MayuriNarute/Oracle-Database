@@ -1,0 +1,238 @@
+		SQL Assignment : Day 3
+-------------------------------------------------------------------------------------------------------------------------
+Name : Mayuri Narute
+IT
+=========================================================================
+
+insert into books values( 105 , 'Swayam','R.shirke',600,'Science');
+insert into books values( 108 , 'Krishna IK','Nawaj jha',700,'Others');
+insert into books values( 109 , 'Moti rajuu ','Guljar nene ',860,'System');
+insert into books values( 110 , 'wajuu','Hrahid jk',200,'Electro');
+
+=========================================================================
+1)
+	select category,count(*) from books group by category;
+
+=========================================================================
+2)
+	select  book_no,count(*) from issue group by book_no order by count(*) desc;
+
+=========================================================================
+3)
+     	select count(*) penalty_amount ,max(penalty_amount),min(penalty_amount),sum(penalty_amount),avg(penalty_amount) 
+	from member;
+
+=========================================================================
+4)
+	 select member_id,max_books_allowed from member where max_books_allowed>2;
+
+=========================================================================
+5)
+	select  b.book_no ,i.member_id,i.book_no from books b LEFT OUTER JOIN 
+	issue i ON b.book_no = i.book_no
+	 ,((select  i.book_no ,count(*)  order by count(*) desc));
+
+=========================================================================
+6)
+	select to_char(issue_date,'MONTH'),count(book_no)from issue group by to_char(issue_date,'MONTH')order by 2 desc;
+
+==========================================================================
+7)
+	select book_no,book_name from books where book_no not in (select book_no from  issue);
+
+============================================================================
+8)
+	select member_id from member where member_id in(select member_id from issue);
+
+=============================================================================
+9)
+	select member_id,count(*) from issue group by member_id having count(*) in
+	 ((select max(count(*))from issue group by member_id),(select min(count(*))
+	from issue group by member_id));
+
+==============================================================================
+10)
+	select *  from issue where to_char(issue_date,'MM')in('12','07');
+
+========================================================================
+11)
+	select b.book_no,b.book_name,b.category,i.issue_date from books b,issue i 
+	where to_char(issue_date,'MM')in('12') and
+	 b.book_no=i.book_no and category='Database';
+
+============================================================================
+12)
+	select i.member_id ,m.member_name ,count(i.book_no)
+	from member m ,issue i 
+	where i.member_id=m.member_id 
+	group by i.member_id,
+	m.member_name order by 3 desc;
+
+=================================================================================
+13)
+	select b.book_no,b.book_name,i.issue_date,i.return_date
+	 from books b ,member m,issue i
+	 where(m.member_name='richa sharma')
+
+==================================================================================
+14)
+	select m.member_id,m.member_name,b.category from member m,books b ,issue i where b.category ='Database'and
+	 m.member_id=i.member_id and b.book_no=i.book_no;
+
+======================================================================================
+15)
+	select category,max(cost) from books  group by category;
+
+===================================================================================
+16)
+	SELECT M.ACC_OPEN_DATE,I.BOOK_NO,I.ISSUE_DATE,I.MEMBER_ID,I.ISSUE_DATE,I.RETURN_DATE
+	FROM MEMBER M,ISSUE I
+	 WHERE (I.ISSUE_DATE NOT BETWEEN M.ACC_OPEN_DATE AND I.RETURN_DATE)
+	AND I.MEMBER_ID=M.MEMBER_ID ;
+=====================================================================================
+17)
+	SELECT DISTINCT M.MEMBER_ID,M.MEMBER_NAME
+	FROM MEMBER M,ISSUE I
+	WHERE M.MEMBER_ID NOT IN(SELECT MEMBER_ID FROM ISSUE);
+
+====================================================================================
+18)
+	SELECT MEMBER_ID,MEMBER_NAME
+	FROM MEMBER 
+	WHERE
+	(SELECT COUNT(I.BOOK_NO) FROM ISSUE I,BOOKS B,MEMBER M
+	WHERE I.BOOK_NO=B.BOOK_NO AND I.MEMBER_ID=M.MEMBER_ID)>MAX_BOOKS_ALLOWED
+	GROUP BY MEMBER_ID,MEMBER_NAME;
+	
+===================================================================================
+19)
+
+
+====================================================================================
+20)
+	SELECT DISTINCT B.BOOK_NAME,B.COST
+	FROM BOOKS B,ISSUE I
+	WHERE (I.RETURN_DATE-I.ISSUE_DATE)>30;
+
+====================================================================================
+21)
+	SELECT B.AUTHOR_NAME,B.BOOK_NAME 
+	FROM BOOKS B
+	WHERE (SELECT COUNT(C.AUTHOR_NAME) 
+	FROM BOOKS  C WHERE B.AUTHOR_NAME=C.AUTHOR_NAME)>=2;
+
+=====================================================================================
+22)
+	SELECT M.MEMBER_NAME,M.MEMBER_ID,COUNT(*)
+	FROM ISSUE I,MEMBER M
+	WHERE M.MEMBER_ID = I.MEMBER_ID
+	GROUP BY M.MEMBER_NAME,M.MEMBER_ID
+	HAVING COUNT(*) IN
+	( (SELECT MAX( COUNT(*)) FROM ISSUE GROUP BY MEMBER_ID),
+	(SELECT MIN( COUNT(*)) FROM ISSUE GROUP BY MEMBER_ID) ) ;
+
+========================================================================================
+23)
+	SELECT MAX(COST) FROM BOOKS
+	UNION
+	SELECT MAX(COST) FROM BOOKS
+	WHERE COST < (SELECT MAX(COST) FROM BOOKS)
+	UNION
+	SELECT MAX(COST) FROM BOOKS
+	WHERE COST < ( SELECT MAX(COST) FROM BOOKS 
+	WHERE COST < (SELECT MAX(COST) FROM BOOKS));
+
+=========================================================================
+24)
+	SELECT SUM(B.COST) 
+	FROM BOOKS B,ISSUE I
+	WHERE (I.RETURN_DATE>SYSDATE AND B.BOOK_NO=I.BOOK_NO);
+	
+==========================================================================
+25)
+	SELECT B.BOOK_NO,B.BOOK_NAME,COUNT(*)
+	FROM ISSUE  I,BOOKS B
+	WHERE B.BOOK_NO=I.BOOK_NO
+	GROUP BY B.BOOK_NO,B.BOOK_NAME
+	HAVING COUNT(*) IN(SELECT MAX( COUNT(*) ) FROM ISSUE GROUP BY MEMBER_ID);
+
+==================================================================
+26)                    
+
+==================================================================
+27)
+	select membership_type,count(*)from member group by membership_type;
+
+==================================================================
+28)
+	select m.member_id,m.member_name,m.membership_type
+	(SELECT MAX( COUNT(*)) FROM ISSUE GROUP BY MEMBER_ID)	
+
+==================================================================
+29)
+
+
+============================================================
+30)
+	select member_name from member where rownum<=5;
+
+============================================================
+32)
+	insert into issue values(7007,108,5,'20-oct-19',null);
+	insert into issue values(7009,110,3,'6-aug-17',null);
+	insert into issue values(7010,109,2,'2-jan-16','7-feb-17');
+
+	select * from issue where return_date= null;
+============================================================
+33)
+	select m.member_id,m.member_name,m.membership_type,i.issue_date
+	from member m ,issue i
+	where i.member_id=m.member_id
+	and issue_date between '1-Dec-06' and '31-Dec-06' ;
+
+============================================================	
+34)
+	select m.member_name,b.book_no,b.book_name,i.issue_date,b.author_name
+	 from books b,issue i ,member m
+    	where to_char(issue_date,'MM')in('12') and
+     	m.member_id=i.member_id and author_name='Loni';
+
+==============================================================
+35)
+	
+	select b.book_no,b.book_name, b.author_name
+	from books b,issue i,member m
+	where m.member_id=i.member_id
+	group by b.book_no
+	having count(*) in
+	(SELECT MIN( COUNT(*)) FROM ISSUE GROUP BY MEMBER_ID , membership_type='lifetime');
+
+=================================================================
+36)
+	
+
+================================================
+37)
+	select b.book_no, b.book_name,m.membership_type
+	from books b,member m,issue i
+	where i.book_no=b.book_no and
+	i.member_id=m.member_id and
+	 m.membership_type='annual'  ;
+
+===================================================
+38)
+	select m.member_name,b.book_name,b.author_name,b.cost
+	from member m,issue i,books b
+	where i.book_no=b.book_no and
+	i.member_id=m.member_id and
+	b.cost>=300 and b.author_name='Scott Urman';
+
+===================================================
+39)
+	
+
+
+============================================================
+	
+
+

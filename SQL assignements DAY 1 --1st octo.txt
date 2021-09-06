@@ -1,0 +1,331 @@
+			** SQL  ASSIGNMENT  Day -1**
+
+Name : Mayuri Narute
+********************************************************************************
+1)
+create table Member2(
+	Member_id number(5) ,
+	member_name varchar2(30),
+	member_address varchar2(50),
+	acc_open_date  Date,
+	Membership_type varchar2(20) ,
+	fees_paid number(4),
+	Max_books_allowed number(2),
+	penalty_amount number(7,2)
+);
+create table books(
+	book_no number(6),
+	book_name varchar2(30),
+	author_name varchar2(30),
+	cost number(7,2),
+	category char(10)
+);
+create table issue(
+	lib_issue_id number(10),
+	book_no number(6),
+	member_id number(5),
+	issue_date Date,
+	Return_date Date
+);
+
+===================================
+2)
+	desc member;
+	desc issue;
+	desc books;
+===================================
+3)
+	drop table member;
+
+============================================
+4)
+
+create table member(
+	member_id number(6) primary key,
+	member_name varchar2(20),
+	member_address varchar2(20),
+	acc_open_date  date,
+	membership_type varchar2(10),
+	fees_paid number(6),
+	max_books_allowed  number(2),
+	penalty_amount  number(2)
+);
+
+=============================================
+5)
+	alter table member modify(member_name varchar2(30));
+
+=============================================
+6) 
+	alter table issue ADD  reference char(30);
+
+=============================================
+7)
+	alter table issue drop column reference;
+
+=============================================
+8)
+ 	alter table issue rename to lib_issue;
+
+==================================================================
+9)
+	insert into member values(1,'richa sharma','pune','10-Dec-05','lifetime',25000,5,50);
+
+	insert into member values(2,'Garima sen','pune','01-OCT-20','annual',1000,3,null);
+
+====================================================================
+
+10)
+
+	insert into member values(3,'mahi toni','nashik','07-OCT-90','lifetime',19000,4,60);
+	insert into member values(4,'Neha drama','mumbai','21-sep-80','Quarterly',1500,5,30);
+	insert into member values(6,'mayuri ','sangli','07-nov-90','annual',7000,2,80);
+	insert into member values(7,'Riya','pimpri','04-jan-99','annual',32200,1,80);
+	insert into member values(8,'anita ','nanded','02-jul-87','Quarterly',4000,8,80);
+
+====================================================================
+11)
+	alter table member modify(member_name varchar2(20));
+
+====================================================================
+12)
+	insert into member values(9,'mahendra','nashik','07-FEB-90','lifetime',18000,110,60,'sneh');
+
+	insert into member values(9,'mahendra','nashik','07-FEB-90','lifetime',18000,110,60,'sneh');
+                                                                             *
+	ERROR at line 1:
+	ORA-01438: value larger than specified precision allowed for this column
+
+=====================================================================
+13)
+	create table member101(
+		member_id number(6) primary key,
+		member_name varchar2(20),
+		member_address varchar2(20),
+		acc_open_date  date,
+		membership_type varchar2(10),
+		fees_paid number(6),
+		max_books_allowed  number(2),
+		penalty_amount  number(2)
+	);
+=====================================================================
+14)
+	alter table member101 add constraint max_books_allowed check(max_books_allowed<100);
+
+	alter table member101 add constraint penalty_amount check(penalty_amount<=1000);
+
+===============================================================================
+15)
+	drop table books;
+======================================================================
+16)
+	create table books(
+		book_no number(6) primary key,
+		book_name varchar2(30) not null,
+		author_name varchar2(30),
+		cost number(7,2),
+		category char(10)
+	);
+==========================================================
+17)
+	insert into books values(101,'Let us C','Denis Ritche',450,'System');
+	insert into books values(102,'Oracle complete Ref','Loni',550,'Database');
+	insert into books values(103,'Mastering SQL','Loni',250,'Database');
+	insert into books values(104,'PL SQL-Ref','Scott Urman',750,'Database');
+
+==========================================================
+18)
+	insert into books values(&Book_Number,&Book_Name,&Author_Name,&Cost,&Catagory);
+
+===========================================================	
+19)
+	create table books101(
+		book_no number(6) primary key,
+		book_name varchar2(30) not null,
+		author_name varchar2(30),
+		cost number(7,2),
+		category char(10)
+	);
+====================================================
+20->
+	insert into books101( 
+	select book_no,book_name,author_name,cost,category from books
+	);
+=====================================================
+21)
+	commit ;
+=====================================================
+22)
+	select * from books101;
+	select * from books;
+	select * from member;
+	select * from member101;
+
+================================================
+23)
+	insert into books values(105,'National Geographic','Adis Scott',1000,'Science');
+
+================================================
+24)
+	rollback;
+================================================
+25)
+	 update books set cost=300,category='RDBMS' where book_no=103;
+
+=============================================
+26)
+	alter table lib_issue rename to issue;
+
+================================================
+27)
+	drop table issue;
+
+================================================
+28)
+	create table issue
+	(
+	Lib_Issue_Id Number(10) primary key,
+	Book_No number(6) references books(Book_No) on delete cascade,
+	Member_ID number(5) references member (member_id) on delete cascade,
+	Issue_Date date,
+	Return_date date,
+	check (Issue_Date<Return_date)
+	);
+
+==================================================
+29)
+	insert into issue values(7001,101,1,'10-Dec-06','');
+	insert into issue values(7002,102,2,'25-Dec-06','');
+	insert into issue values(7003,104,1,'15-jan-06','');
+	insert into issue values(7004,101,1,'4-july-06','');
+	insert into issue values(7005,104,2,'15-nov-06','');
+	insert into issue values(7006,101,3,'18-feb-06','');
+
+=====================================================
+30)
+	commit;
+
+=====================================================
+
+31->
+	alter table issue disable constraint;
+
+=================================================
+32)
+	
+	insert into issue values(7007,103,2,'15-jan-2006','25-jan-2006');
+
+==================================================
+33)
+	alter table issue enable constraint;
+
+===================================================
+
+34)
+	delete from issue where Lib_Issue_Id=7007;
+
+==================================================
+35)
+	delete from member where member_id=1;
+
+==================================================================
+36)
+	update issue set return_date=issue_date + 15 where lib_issue_id=(7004,7005);
+
+==================================================================
+37)
+	update member set penality_amount=100 where member_name='Garima Sen';
+
+====================================================================
+38)
+	commit;
+
+=========================================================
+39)
+
+	delete from issue where member_id=1 and issue_date<'10-dec-2006';
+
+==========================================================
+40)
+	delete from books where category not in ('rdbms','database');
+
+==================================
+41)
+	rollback;
+============================
+42)
+	commit;
+
+=============================
+43)
+	drop table member101;
+
+================================
+44)
+	drop table books101;
+
+===============================
+45)
+	desc member;
+	desc books;
+	desc issue;
+
+	select * from member;
+	select * from books;
+	select * from issue;
+==============================
+
+46)
+	CREATE SEQUENCE no_seq
+	START WITH 100
+	INCREMENT BY 2
+	maxvalue 200
+	NOCACHE
+	NOCYCLE;
+============================
+
+47)
+	drop sequence no_seq;
+
+============================
+48)
+	create sequence book_seq
+	start with 101
+	INCREMENT BY 1
+	maxvalue 1000
+	nocycle;
+
+==========================
+49->
+	create sequence member_seq
+	start with 1
+	INCREMENT BY 1
+	maxvalue 100
+	nocycle;
+
+===========================
+50->
+	drop sequence member_seq;
+
+=================================
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

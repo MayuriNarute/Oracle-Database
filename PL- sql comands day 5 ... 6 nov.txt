@@ -1,0 +1,86 @@
+
+procedure is like a function 
+we can pass it parameters..........
+
+==============================
+create or replace procedure procadd2( n1 in number,n2 in number ,add out number)
+is
+	
+begin
+	add:=n1+n2;
+end;
+-----------------------------------------------------
+declare 
+	n1 number;
+	n2 number;
+	a number;
+begin
+	n1:=&n1;
+	n2:=&n2;
+	procadd2(n1,n2,a);
+	dbms_output.put_line('add is '|| a);
+end;
+=======================================
+create or replace procedure cal_bonus( sal in out number)
+is
+	
+begin
+	sal := sal*0.05;
+end;
+=====================================
+declare 
+	no employee.empid%type;
+	sal employee.salary%type;
+begin
+	no:=&no;
+	select salary into sal from employee where empid=no;
+	cal_bonus(sal);
+	dbms_output.put_line('bonus is '|| sal);
+end;
+/
+=============================================
+create or replace procedure raise_salary(p_eno employee.empid%type)
+is
+	vsal employee.sal%type;
+begin
+	select sal into vsal from employee where empid=p_eno;
+	if vsal <20000 then
+	update employee set sal=salary+vsal *0.1 where empid:=p_eno;
+		dbms_output.put_line('record updated');
+	end if;
+	exception 
+		when no_data found then
+				dbms_output.put_line('empno does not exist ');
+end raise_salary;
+/
+
+==================================================
+declare
+	eid employee.empid%type;
+begin
+	eid:=&eid;
+	raise_salary(eid);
+end;
+/
+==============================================	
+create or replace function annual(p_sal number) return number
+is
+begin
+	return p_Sal*12;
+end;
+-------------------------------------------------------
+declare 
+	no employee.empid%type;
+	sal employee.salary%type;
+	asal employee.salary%type;
+begin
+	no:=&no;
+	select salary into sal from employee where empid=no;
+	asal:=annual(sal);
+	dbms_output.put_line('annual salary is '|| asal);
+end;
+/
+
+=====================================================
+
+	

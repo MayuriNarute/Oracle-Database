@@ -1,0 +1,129 @@
+select * from employee ;
+ =========================
+** error -- declare 
+		cnt number;
+ 	begin
+
+		select * from employee where salary>10000;
+	 	cnt:=sql%rowcount;
+		dbms_output.put_line('total records' || cnt );
+	end;
+
+=========================
+declare 
+	cnt number;
+ begin
+	update employee set salary =0 where salary > 10000;
+
+ 	cnt:=sql%rowcount;
+		dbms_output.put_line('total records  :' || cnt );
+end;
+
+==================================
+declare 
+	cnt number;
+ begin
+	update employee set salary =0 where salary > 10000;
+	if  sql%found then 
+ 		cnt:=sql%rowcount;
+		dbms_output.put_line('total records' || cnt );
+	elsif sql%notfound then
+		dbms_output.put_line('NO  records' || cnt );
+	end if;
+end;
+
+===========================================
+declare
+	cursor c1;
+	is 
+	select fname,salary ,deptno from employee ;
+	fnm employee.fname%type;
+	sal employee.salary%type;
+	cnt number(3);
+	incr sal employee.salary%type;
+begin
+	open c1;
+	loop
+	fetch c1 into eid,fnm,sal,dno;
+	exit when c1%notfound;
+	if(dno=10) then
+		incrsal:=sal*0.05;
+	elsif (dno=20) then
+		incrsal:=sal*0.06;
+	else
+	       incrsal:=sal*0.07;
+	end if;
+		update employee set salary=sal+incrsal where empid=eid;
+	end loop;
+		dbms_output.put_line('total records are' || cnt );
+	close c1;
+end;
+/	
+==============================================
+**Steps of using cursor ->	
+
+DECLARE
+ 
+OPEN
+
+FETCH
+
+CLOSE
+
+============================================
+IN FOR LOOP 
+	NO NEED TO OPEN FETCH CLOSE the cursor....
+
+=============================================
+**cursor using for loop
+-----------------------------------------
+declare 
+  cursor c1
+is
+ select ename ,salary from employee;
+begin
+	for emp_rec in c1
+	loop
+	if(emp_rec.salary > 1000) then
+		dbms_output.put_line('Name is ' || emp_rec.ename );
+		dbms_output.put_line('Salary is ' || emp_rec.salary );
+	end if;
+	end loop;
+end;
+
+======================================================
+--Implicit Cursor
+DECLARE
+	total_rows number(2);
+BEGIN
+	UPDATE emp set sal = sal + 500;
+	IF SQL%NOTFOUND THEN
+		DBMS_OUTPUT.PUT_LINE('NO CUSTOMER SELECTED');
+	ELSIF SQL%FOUND THEN
+		total_rows := sql%rowcount;
+			DBMS_OUTPUT.PUT_LINE(total_rows||' Customer Selected');
+	END IF;
+END;
+/
+
+=============================================================
+--Explicit Cursor
+
+DECLARE
+	e_id emp.empno%type;
+	e_name emp.ename%type;
+	e_sal emp.sal%type;
+	CURSOR c_emp is
+		SELECT empno,ename,sal From emp;
+BEGIN
+	OPEN c_emp;
+	LOOP
+	FETCH c_emp into e_id,e_name,e_sal;
+		EXIT WHEN c_emp%notfound;
+		DBMS_OUTPUT.PUT_LINE(e_id||' '||e_name||' '||e_sal);
+	END LOOP;
+	CLOSE c_emp;
+END;
+/
+
+

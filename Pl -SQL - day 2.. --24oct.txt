@@ -1,0 +1,83 @@
+declare 
+	n1 number(5);
+	n2 number(6);
+begin 
+	if n1>n2 then 
+	DBMS_OUTPUT.PUT_LINE('Number 1 is greater ' ||eid);
+
+		
+
+
+
+========================
+declare
+	eid employee.empno%type;
+	fnm employee.ename%type;
+	sal employee.salary%type;
+	newsal number(8);
+begin
+	eid=&eid;
+	select empno ,ename ,salary into eid,fnm ,sal from employee
+	where empno=eid;
+	if sal>20000 & sal<6000 then
+		newsal:=sal*0.03;
+
+	elsif sal>=6000 & sal<20000 then
+		newsal:=sal*0.05;
+	else
+		newsal:=sal*0.07;
+	update employee set salary =new sal where empno=eid;
+	DBMS_OUTPUT.PUT_LINE('Emp id ' ||eid);
+	DBMS_OUTPUT.PUT_LINE('Emp name ' ||eid);
+	DBMS_OUTPUT.PUT_LINE('Emp salary' ||eid);
+end;
+
+=================================================
+declare
+	eid employee.empno%type;
+	emprec employee%rowtype;
+begin
+	eid=&eid;
+	select *  into emprec from employee where empno=eid;
+	DBMS_OUTPUT.PUT_LINE('Emp no' ||emprec.empno);
+	DBMS_OUTPUT.PUT_LINE('Emp name' ||emprec.ename);
+	DBMS_OUTPUT.PUT_LINE('Emp salary' ||emprec.salary);
+end;
+
+=================================================
+decalre //simple loop
+	i number(2) :=1;
+	 
+begin
+	loop 
+		DBMS_OUTPUT.PUT_LINE('value :' || i);
+			exit when i=10;
+		i :=i+1;
+	end loop;
+end;
+
+===========================================
+	begin
+		for i IN 1..10
+	loop
+		DBMS_OUTPUT.PUT_LINE('value :' || i);
+	end loop;
+end;
+
+======================================
+ 	loops -
+factor
+factorial
+power
+reverse of no
+prime
+	if else -
+		gretaer betn 2 nos;
+		greater betn 3 nos;
+		accept eid find salary calculate annual sal & calculate tax 
+			if sal < 45000
+				tax 5%
+			if sal >5000 and <10000
+				tax 6%
+			else
+				tax 8%
